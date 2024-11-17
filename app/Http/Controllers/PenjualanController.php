@@ -8,52 +8,34 @@ use Illuminate\Http\Request;
 class PenjualanController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * daftar resource.
      */
     public function index()
     {
-        return view('penjualan.index', [
-            'title' => 'Penjualan',
-            'data' => Penjualan::all()
-        ]);
+        return response()->json(Penjualan::all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $validasi = $request->validate([
-            'nama_produk' => 'required',
-            'jumlah' => 'required | integer',
-            'harga' => 'required | numeric',
-        ]);
-
-        Penjualan::create($validasi);
-        return redirect()->back()->with('success', 'Data Penjualan Berhasil Ditambahkan');
+        $penjualan = Penjualan::create($request->all());
+        return response()->json($penjualan);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function show($id)
     {
-        $validasi = $request->validate([
-            'nama_produk' => 'required',
-            'jumlah' => 'required | integer',
-            'harga' => 'required | numeric',
-        ]);
-
-        Penjualan::where('id', $id)->update($validasi);
-        return redirect()->back()->with('success', 'Data penjualan berhasil diperbarui.');
+        return response()->json(Penjualan::find($id));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function update(Request $request, $id)
+    {
+        $penjualan = Penjualan::find($id);
+        $penjualan->update($request->all());
+        return response()->json($penjualan);
+    }
+
+    public function destroy($id)
     {
         Penjualan::destroy($id);
-        return redirect()->back()->with('success', 'Data penjualan berhasil dihapus.');
+        return response()->json(['message' => 'Data deleted successfully']);
     }
 }
