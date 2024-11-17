@@ -17,5 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index']);
 
-Route::resource('/penjualan', PenjualanController::class)->except(['create','edit','show']);
+Route::get('penjualan', function () {
+    return view('penjualan.index', [
+        'title' => 'Penjualan'
+    ]);
+});
 
